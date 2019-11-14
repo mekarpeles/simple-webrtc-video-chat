@@ -1,6 +1,6 @@
 // the socket handles sending messages between peer connections while they are in the
 // process of connecting
-var socket = new WebSocket('ws://' + window.location.host + window.location.pathname);
+var socket = new WebSocket('wss://' + window.location.host + window.location.pathname);
 
 socket.onmessage = function(message) {
   var msg = JSON.parse(message.data);
@@ -70,7 +70,7 @@ pc.onicecandidate = function(e) {
 
 pc.onaddstream = function(e) {
   console.log('start remote video stream');
-  vid2.src = webkitURL.createObjectURL(e.stream);
+  vid2.srcObject = e.stream;
   vid2.play();
 };
 
@@ -79,7 +79,7 @@ function broadcast() {
   navigator.webkitGetUserMedia({audio: true, video: true}, function(s) {
     stream = s;
     pc.addStream(s);
-    vid1.src = webkitURL.createObjectURL(s);
+    vid1.srcObject = s;
     vid1.play();
     // initCall is set in views/index and is based on if there is another person in the room to connect to
     if(initCall)
